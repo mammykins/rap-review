@@ -119,12 +119,25 @@ figure3.1(x = gva)
 
 Again we can look at the details of the plot. We could change the body of the function to affect change to the default plot or we can pass additional `ggplot` arguments to it.
 
+Reading the code we see it filters the data, makes the variables it needs, refactors the `sector` variable and then plots it. 
+
 ```{r}
 body(figure3.1)
 
 ```
 
-I can inspect and change an argument if I feel inclined or if a new colour scheme becomes preferred for example.
+I can inspect and change an argument if I feel inclined or if a new colour scheme becomes preferred for example. However, there is no `...` in the body of the function itself so where does this argument get passed to?
 
+This all looks straight forward and we can inspect the other functions for generating the figures or plot output.
 
+```{r}
+body(figure3.2)
+body(figure3.3)
+```
+
+##### Error handling
+
+A point of interest in the code with which some users may be unfamiliar is `tryCatch` which is a function that allows the function to catch conditions such as warnings, errors and messages. We see this towards the end of the function where if either of these conditions are produced then an informative message is produced (in that it tells you in what function there was a problem). The structure here is simple and could be copied and pasted for use in automating other figures of other chapters or statistical reports.  
+
+For a comprehensive introduction see [Hadley's Chapter](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling).
 
