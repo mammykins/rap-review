@@ -1,6 +1,8 @@
 ---
 title: "RAP exemplar"
-output: html_notebook
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 ## Reproducible Analytical Pipeline
@@ -35,7 +37,7 @@ library(tidyverse)
 
 ```
 
-This makes all the functions within the package available for use. It also provides us with some R data objects, such as aggregated data sets ready for visualisations or analysis within the report.  
+This makes all the functions within the package available for use. It also provides us with some R [data objects](https://github.com/ukgovdatascience/eesectors/tree/master/data), such as aggregated data sets ready for visualisations or analysis within the report.  
 
 > Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data. - Hadely Wickham
 
@@ -73,6 +75,25 @@ The author uses messages to tell us what checks are being conducted or we can lo
 gva <- year_sector_data(GVA_by_sector_2016)
 ```
 
+This is a semi-automated process so the user should check the Checks and ensure they meet their usual checks that would be conducted manually. If a new check or test becomes necessary then it should be implemented by changing the code.
+
+```{r}
+body(year_sector_data)
+```
+
+The function is  structured to tell the user what check is being made and then running that check given the input `x`. If the input fails a check the function is stopped with a useful diagnostic message for the user. This is achieved using `if` and the opposite of the desired feature of `x`.  
+
+```{r eval=FALSE}
+    message("Checking x has correct columns...")
+    if (length(colnames(x)) != 3) 
+        stop("x must have three columns: sector, year, and one of GVA, export, or x")
+```
+
+
+For example, if `x` does not have exactly three columns we `stop`.
+
+#### output of this function
+
 The output object is different to the input as expected, yet it does contain the initial data.
 
 ```{r}
@@ -97,8 +118,6 @@ class(gva)
 ```
 
 It's not actually an S4 object, by slots the author means a list of objects.
-
-
 
 #### The input
 
@@ -135,9 +154,18 @@ body(figure3.2)
 body(figure3.3)
 ```
 
-##### Error handling
+#### Error handling
 
 A point of interest in the code with which some users may be unfamiliar is `tryCatch` which is a function that allows the function to catch conditions such as warnings, errors and messages. We see this towards the end of the function where if either of these conditions are produced then an informative message is produced (in that it tells you in what function there was a problem). The structure here is simple and could be copied and pasted for use in automating other figures of other chapters or statistical reports.  
 
-For a comprehensive introduction see [Hadley's Chapter](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling).
+For a comprehensive introduction see [Hadley's Chapter](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling).  
+
+## Take home message
+
+We have explored the `eesectors` package from the perspective of someone wishing to develop our own semi-automated chapter production through the development of a package in R. This package provides a useful tempplate where one could copy the foundations of the package and workflow.  
+
+```{r}
+sessionInfo()
+```
+
 
